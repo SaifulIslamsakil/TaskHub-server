@@ -23,6 +23,7 @@ const client = new MongoClient(uri, {
 const CreateProjectCollaction = client.db("Task_Hub").collection("Create_Project")
 const CreateTaskCollaction = client.db("Task_Hub").collection("Create_Task")
 const AddTicketCollaction = client.db("Task_Hub").collection("addTicket")
+const NotificationCollaction = client.db("Task_Hub").collection("notification")
 
 async function run() {
   try {
@@ -114,6 +115,15 @@ async function run() {
         }
       }
       const result = await AddTicketCollaction.updateOne(quray, update)
+      res.send(result)
+    })
+    app.post("/notification", async(req,res)=>{
+      const body = req.body
+      const result = await NotificationCollaction.insertOne(body)
+      res.send(result)
+    })
+    app.get("/notification", async(req,res)=>{
+      const result = await NotificationCollaction.find().toArray()
       res.send(result)
     })
     // Send a ping to confirm a successful connection
