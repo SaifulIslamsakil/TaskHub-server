@@ -24,6 +24,7 @@ const CreateProjectCollaction = client.db("Task_Hub").collection("Create_Project
 const CreateTaskCollaction = client.db("Task_Hub").collection("Create_Task")
 const AddTicketCollaction = client.db("Task_Hub").collection("addTicket")
 const NotificationCollaction = client.db("Task_Hub").collection("notification")
+const TimeCollaction = client.db("Task_Hub").collection("time")
 
 async function run() {
   try {
@@ -122,10 +123,21 @@ async function run() {
       const result = await NotificationCollaction.insertOne(body)
       res.send(result)
     })
-    app.get("/notification", async(req,res)=>{
+    app.get("/notifications", async(req,res)=>{
       const result = await NotificationCollaction.find().toArray()
       res.send(result)
     })
+    app.post("/Hours-Tracked", async (req,res)=>{
+      const body = req.body;
+      const result = await TimeCollaction.insertOne(body);
+      res.send(result)
+    })
+
+    app.get("/Hours-Tracked", async (req,res)=>{
+     const result = await TimeCollaction.find().toArray()
+     res.send(result)
+    })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
